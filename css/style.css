@@ -107,16 +107,16 @@ a:hover, a:active {
   animation-name: fadeInDown;
 }
 
-/*animation ends*/
+/*主体内容*/
 .content {
   height: auto;
   float: right;
-  width: 60%;
+  width: 70%;
   margin-top: 60px;
 }
-
+/*主体内容的页栏*/
 .page-top {
-  width: 60%;
+  width: 70%;
   position: fixed;
   right: 0;
   z-index: 3;
@@ -169,8 +169,9 @@ a:hover, a:active {
   padding-right: 40px;
 }
 
+/*左边栏*/
 .sidebar {
-  width: 40%;
+  width: 30%;
   -webkit-background-size: cover;
   background-size: cover;
   background-color: #fff;
@@ -182,9 +183,10 @@ a:hover, a:active {
   z-index: 4;
   border-right: 1px solid #f2f2f2;
 }
+/*左边栏的核心整体*/
 .sidebar .logo-title {
   text-align: center;
-  padding-top: 240px;
+  padding-top: 120px;
 }
 .sidebar .logo-title .description {
   font-size: 14px;
