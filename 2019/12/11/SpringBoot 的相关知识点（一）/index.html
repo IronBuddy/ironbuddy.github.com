@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Yuan Zhang,Robert_zy@yeah.net"><title>Spring Boot 的相关知识点（一） · Yuan's Blog</title><meta name="description" content="1    @value 和 @ConfigurationProperties 的区别
+
+
+
+@ConfigurationProperties
+@Value
+
+
+
+功能
+批量注入配置文件中的属性
+一个个指定
+
+
+松散绑定（一种松散语法）
+支持
+不支持
+
+
+SpEL（一种计算形式）
+不支持
+支持
+
+
+J"><meta name="keywords" content="Hexo,HTML,CSS,android,Linux"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 4.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">Yuan's Blog</a></h3><div class="description"><p>Nothing lasts forever.</p></div></div></div><ul class="social-links"><li><a href="https://twitter.com//" target="_blank" rel="noopener"><i class="fa fa-twitter"></i></a></li><li><a href="http://weibo.com/u/3896700142" target="_blank" rel="noopener"><i class="fa fa-weibo"></i></a></li><li><a href="http://github.com/IronBuddy" target="_blank" rel="noopener"><i class="fa fa-github"></i></a></li></ul><div class="footer"><a target="_blank" href="/"><span>Blog belongs to</span></a><a href="/"> Yuan</a><span> </span><a href="/"> Zhang</a><div class="by_farbox"><a href="/" target="_blank">Civilize Your Mind, Brutalize Your Body.</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Spring Boot 的相关知识点（一）</a></h3></div><div class="post-content"><h4 id="1-value-和-ConfigurationProperties-的区别"><a href="#1-value-和-ConfigurationProperties-的区别" class="headerlink" title="1    @value 和 @ConfigurationProperties 的区别"></a>1    @value 和 @ConfigurationProperties 的区别</h4><table>
+<thead>
+<tr>
+<th></th>
+<th align="left">@ConfigurationProperties</th>
+<th>@Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>功能</td>
+<td align="left">批量注入配置文件中的属性</td>
+<td>一个个指定</td>
+</tr>
+<tr>
+<td>松散绑定（一种松散语法）</td>
+<td align="left">支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>SpEL（一种计算形式）</td>
+<td align="left">不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>JSR303 数据校验（@Validated）</td>
+<td align="left">支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>复杂类型封装</td>
+<td align="left">支持</td>
+<td>不支持</td>
+</tr>
+</tbody></table>
+<p>在用 @ConfigurationProperties 时，配置文件不论是 yml 还是 properties 都可以获取到值。</p>
+<p><strong>总的来说：</strong></p>
+<p>如果说，我们只是在某个业务逻辑中需要获取配置文件中的某一项值，用 @value 注解。</p>
+<p>如果说，我们专门编写了一个 javaBean 来和配置文件进行映射时，用 @ConfigurationProperties 注解。</p>
+<h4 id="2-PropertySource-amp-ImportResource"><a href="#2-PropertySource-amp-ImportResource" class="headerlink" title="2    @PropertySource &amp; @ImportResource"></a>2    @PropertySource &amp; @ImportResource</h4><p><strong>@PropertySource</strong>：加载指定的配置文件。</p>
+<p><strong>@ImportResource</strong>：导入 Spring 的配置文件，让配置文件里面的内容生效。</p>
+<p>Spring Boot 里面没有 Spring 的配置文件，我们自己编写的配置文件，Spring Boot 也无法自动识别。</p>
+<p>若想让 Spring 的配置文件生效，则需要将 <strong>@ImportResource</strong> 注解标注在配置类上，可如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="meta">@ImportResource</span>(location = &#123;<span class="string">"classpath: beans.xml"</span>&#125;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringBootConfigApplication</span></span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    ...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+
+<p><strong>PS：</strong>Spring Boot 不推荐使用配置文件的方式来注入 Bean，用 <strong>@Bean</strong> 注解来给容器中添加组件。</p>
+<h4 id="3-配置文件的占位符"><a href="#3-配置文件的占位符" class="headerlink" title="3    配置文件的占位符"></a>3    配置文件的占位符</h4><p><strong>随机数：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">$&#123;random.value&#125;    $&#123;random.<span class="keyword">int</span>&#125;    $&#123;random.<span class="keyword">long</span>&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">$&#123;random.<span class="keyword">int</span>(<span class="number">10</span>)&#125;    $&#123;random.<span class="keyword">int</span>[<span class="number">1024</span>, <span class="number">65536</span>]&#125;</span></pre></td></tr></table></figure>
+
+<p><strong>占位符获取之前配置的值，如果没有则可以使用:来指定默认值</strong></p>
+ <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="meta">person.last-name</span> = <span class="string">张三 $&#123;random.uuid&#125;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="meta">person.age</span> = <span class="string">$&#123;random.int&#125;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="meta">person.dog.name</span> = <span class="string">$(person.hello:hello)_dog</span></span></pre></td></tr></table></figure>
+
+<h4 id="4-Profile"><a href="#4-Profile" class="headerlink" title="4    Profile"></a>4    Profile</h4><p>Profile 是 Spring 对不同环境提供不同配置功能的支持，可以通过激活、指定参数等方式快速切换环境。</p>
+<p><strong>1、多 Profile 文件的方式：</strong></p>
+<p>我们在主配置文件编写的时候，文件名可以是 application-{profile}.properties/yml。</p>
+<p>此时可以在 application.properties 文件中设置属性 <strong>spring.profiles.active</strong> 来激活。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="meta">spring.profiles.active</span>=<span class="string">dev</span></span></pre></td></tr></table></figure>
+
+<p><strong>2、yml 支持多文档块的方式：</strong></p>
+<p>在application.properties 文件中：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">   <span class="attr">port:</span> <span class="number">8081</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">   <span class="attr">profiles:</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">      <span class="attr">active:</span> <span class="string">dev</span> <span class="comment"># 指定所要激活的环境</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">   <span class="attr">port:</span> <span class="number">8082</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">   <span class="attr">profiles:</span> <span class="string">dev</span> <span class="comment"># 指定属于哪个环境</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">   <span class="attr">port:</span> <span class="number">8083</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">   <span class="attr">profiles:</span> <span class="string">prod</span> <span class="comment"># 指定属于哪个环境</span></span></pre></td></tr></table></figure>
+
+<p>虽然写起来方便，但相对于多文件的方式，这种写法的<strong>可读性较差</strong>。</p>
+<p><strong>3、激活指定 profile：</strong></p>
+<p>1、在配置文件中指定    spring.profiles.active=dev </p>
+<p>2、命令行参数    –spring.profiles.active=dev </p>
+<p>3、虚拟机参数    -Dspring.profiles.active=dev</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2019-12-11</span><i class="fa fa-tag"></i><a class="tag" href="/tags/技术相关/" title="技术相关">技术相关 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2019/12/11/SpringBoot 的相关知识点（一）/,Yuan' target="_blank" rel="noopener"s Blog,Spring Boot 的相关知识点（一）,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2019/12/11/YAML%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" title="YAML 的敲门砖">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
