@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Yuan Zhang,Robert_zy@yeah.net"><title>Spring Boot 的相关知识点（二） · Yuan's Blog</title><meta name="description" content="1    配置文件的加载位置Spring Boot 在启动的时候会去扫描以下几个位置的 application.properties 或者 application.yml 文件作为配置文件：
+
+file: ./config （整个项目根路径）
+file: ./
+classpath: /config/"><meta name="keywords" content="Hexo,HTML,CSS,android,Linux"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 4.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">Yuan's Blog</a></h3><div class="description"><p>Nothing lasts forever.</p></div></div></div><ul class="social-links"><li><a href="https://twitter.com//" target="_blank" rel="noopener"><i class="fa fa-twitter"></i></a></li><li><a href="http://weibo.com/u/3896700142" target="_blank" rel="noopener"><i class="fa fa-weibo"></i></a></li><li><a href="http://github.com/IronBuddy" target="_blank" rel="noopener"><i class="fa fa-github"></i></a></li></ul><div class="footer"><a target="_blank" href="/"><span>Blog belongs to</span></a><a href="/"> Yuan</a><span> </span><a href="/"> Zhang</a><div class="by_farbox"><a href="/" target="_blank">Civilize Your Mind, Brutalize Your Body.</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Spring Boot 的相关知识点（二）</a></h3></div><div class="post-content"><h4 id="1-配置文件的加载位置"><a href="#1-配置文件的加载位置" class="headerlink" title="1    配置文件的加载位置"></a>1    配置文件的加载位置</h4><p>Spring Boot 在启动的时候会去扫描以下几个位置的 application.properties 或者 application.yml 文件作为配置文件：</p>
+<ul>
+<li>file: ./config （整个项目根路径）</li>
+<li>file: ./</li>
+<li>classpath: /config/ （resource 文件夹）</li>
+<li>classpath:</li>
+</ul>
+<p>四个位置是<strong>按照优先级排序</strong>的，若以上几个位置都存在同配置属性，则上面位置的文件会覆盖下面位置。</p>
+<p>Spring Boot 会全部加载四个不同位置的配置文件，这样可以实现互补配置，进行分工。</p>
+<p>对于默认位置的修改，可以通过修改 spring.config.location 来完成。</p>
+<p>项目打包好后，还可以通过<strong>命令行参数</strong>的方式，且<strong>这种方式优先级最高</strong>。</p>
+<h4 id="2-配置文件自动配置的原理"><a href="#2-配置文件自动配置的原理" class="headerlink" title="2     配置文件自动配置的原理"></a>2     配置文件自动配置的原理</h4><p>配置文件中所能配置的属性见    <a href="https://docs.spring.io/spring-boot/docs/2.1.11.RELEASE/reference/html/common-application-properties.html" target="_blank" rel="noopener">官方文档</a></p>
+<p>自动配置的原理：</p>
+<ol>
+<li><p>Spring Boot 启动的时候加载主配置类，开启了自动配置功能 <strong>@EnableAutoConfiguration</strong></p>
+</li>
+<li><p>@EnableAutoConfiguration 的作用：</p>
+<p><strong>将类路径下 META-INF/spring.factories 里面配置的所有 EnableConfiguration 的值加入到了容器中</strong></p>
+</li>
+<li><p>每一个自动配置类 <strong>xxxxAutoConfiguration</strong> 来进行自动配置功能 </p>
+</li>
+<li><p>所有在配置文件中能配置的属性都在 <strong>xxxxProperties</strong> 类中封装着，配置文件所能配置的属性需要参照某个功能所对应的这个属性类</p>
+<p>[ 细节知识点 ]</p>
+</li>
+</ol>
+<p>@ConditionalOnXxxx 注解的作用：只有 @Conditional 指定的条件成立，才可以给容器中添加组件，配置文件里面的内容才生效。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2019-12-12</span><i class="fa fa-tag"></i><a class="tag" href="/tags/技术相关/" title="技术相关">技术相关 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2019/12/12/SpringBoot 的相关知识点（二）/,Yuan' target="_blank" rel="noopener"s Blog,Spring Boot 的相关知识点（二）,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2019/12/11/SpringBoot%20%E7%9A%84%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%88%E4%B8%80%EF%BC%89/" title="Spring Boot 的相关知识点（一）">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
